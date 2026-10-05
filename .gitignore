@@ -1,0 +1,14 @@
+# Go
+backend/ai-interview-coach-backend
+backend/bin/
+*.exe
+
+# Env
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
