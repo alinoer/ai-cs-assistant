@@ -1,44 +1,51 @@
 # AI Interview Coach
 
-Latihan wawancara kerja berbasis AI: pengguna menjawab pertanyaan wawancara, model memberi umpan balik.
+Practice job interviews in English, tailored to a real job description, and get instant feedback on both **what you say** and **how you say it**.
 
-Monorepo dengan dua bagian:
+## Why
+Many developers in non-English-speaking countries have the technical skills for remote roles, but struggle in English interviews. Generic question banks don't match the actual job, and practicing alone gives no feedback. This app turns any job description into a focused mock interview and reviews every answer for content quality and English clarity.
 
-- `backend/` — HTTP server Go (saat ini hanya `/healthz`).
-- `frontend/` — SPA React + TypeScript via Vite, dikelola dengan Bun.
+## Features (MVP)
+- Paste a job description → get 5–8 tailored interview questions (technical + behavioral)
+- Answer in English (text) → receive structured feedback:
+  - Content score and what's missing
+  - Grammar and clarity corrections
+  - A stronger example answer
+- Session history to track progress over time
 
 ## Tech Stack
+- **Backend:** Go (net/http), PostgreSQL, pgx + sqlc, goose migrations
+- **Frontend:** React + TypeScript (Vite), Tailwind CSS, shadcn/ui
+- **LLM:** Google Gemini (default) and Anthropic Claude, swappable via a provider interface
+- **Deploy:** Vercel (frontend), Fly.io (backend), Neon (Postgres)
 
-- **Backend:** Go 1.24
-- **Frontend:** React 19, TypeScript, Vite, Bun
-- **LLM:** Gemini / Anthropic (dipilih via env `LLM_PROVIDER`)
+## Architecture
+React SPA → Go REST API → LLM provider (Gemini / Claude)
+                        → PostgreSQL
+
+Diagram coming soon.
+
+## LLM Design
+- **Provider interface:** one Go interface, multiple implementations; the model is selected by environment variable.
+- **Structured output:** responses are constrained by JSON schemas generated from Go structs, then validated, with one retry on invalid output.
+- **Concurrency:** content feedback and language feedback run in parallel goroutines (errgroup).
+- **Reliability:** per-request timeouts via context, graceful error messages.
+
+## Cost & Abuse Control
+- Per-IP rate limiting
+- Input length limits for job descriptions and answers
+- Provider-level spending caps
+- Estimated cost: ~$0.05 per full practice session
 
 ## Getting Started
+Instructions coming soon.
 
-### Backend
+## Roadmap
+- [ ] Voice answers (Web Speech API)
+- [ ] Streaming feedback (SSE)
+- [ ] Upload CV → RAG with pgvector to suggest relevant experiences for each answer
+- [ ] CV ↔ job description matching
+- [ ] Model evaluation: Gemini vs Claude on feedback quality
 
-```bash
-cd backend
-cp .env.example .env   # isi API key
-go run .
-```
-
-Server berjalan di `http://localhost:8080`.
-
-### Frontend
-
-```bash
-cd frontend
-bun install
-bun run dev
-```
-
-Dev server berjalan di `http://localhost:5173`.
-
-## Struktur
-
-```
-.
-├── backend/     # Go API
-└── frontend/    # React SPA (Vite + Bun)
-```
+## License
+MIT
