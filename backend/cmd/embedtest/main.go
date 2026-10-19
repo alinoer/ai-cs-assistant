@@ -17,7 +17,7 @@ func main() {
 		log.Fatal("GEMINI_API_KEY dan GEMINI_EMBED_MODEL wajib diisi (jalankan: set -a; source .env; set +a)")
 	}
 
-	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, 768)
+	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, os.Getenv("GEMINI_GEN_MODEL"), 768)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()

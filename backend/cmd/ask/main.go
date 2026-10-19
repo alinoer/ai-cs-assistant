@@ -35,7 +35,7 @@ func main() {
 	defer cancel()
 
 	// 1. Ubah pertanyaan jadi sidik jari (pakai model yang SAMA dengan saat ingest)
-	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, 768)
+	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, os.Getenv("GEMINI_GEN_MODEL"), 768)	
 	qvec, err := provider.Embed(ctx, *question)
 	if err != nil {
 		log.Fatalf("embed pertanyaan: %v", err)

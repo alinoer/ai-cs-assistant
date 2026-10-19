@@ -48,7 +48,7 @@ func main() {
 		log.Fatal("dokumen kosong, tidak ada yang di-ingest")
 	}
 
-	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, 768)
+	var provider llm.LLM = llm.NewGeminiProvider(apiKey, model, os.Getenv("GEMINI_GEN_MODEL"), 768)
 	vectors := make([][]float32, len(chunks))
 	for i, c := range chunks {
 		vec, err := provider.Embed(ctx, c.Content)
