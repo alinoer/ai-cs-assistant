@@ -6,34 +6,37 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/alinoer/ai-cs-assistant-backend/internal/llm"
 )
 
 func main() {
-	provider := llm.NewGeminiProvider(
-		os.Getenv("GEMINI_API_KEY"),
-		os.Getenv("GEMINI_EMBED_MODEL"),
-		os.Getenv("GEMINI_GEN_MODEL"),
-		768,
+	var gen llm.Generator = llm.NewOpenAICompatibleProvider(
+		os.Getenv("OPENROUTER_BASE_URL"),
+		os.Getenv("OPENROUTER_API_KEY"),
+		strings.Split(os.Getenv("OPENROUTER_MODELS"), ","),
 	)
 
+	// JSON Schema standar (huruf kecil), format OpenAI
 	schema := map[string]any{
-		"type": "OBJECT",
+		"type": "object",
 		"properties": map[string]any{
-			"answer":   map[string]any{"type": "STRING"},
-			"answered": map[string]any{"type": "BOOLEAN"},
+			"answer":   map[string]any{"type": "string"},
+			"answered": map[string]any{"type": "boolean"},
 		},
-		"required": []string{"answer", "answered"},
+		"required":             []string{"answer", "answered"},
+		"additionalProperties": false,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	raw, err := provider.Generate(ctx, llm.GenerateRequest{
-		System:     "Kamu adalah asisten customer service. Jawab singkat dalam bahasa Indonesia.",
-		Prompt:     "Apa itu kopi susu gula aren? Jawab dalam satu kalimat.",
+	raw, err := gen.Generate(ctx, llm.GenerateRequest{
+		System:     "Kamu asisten customer service. Jawab singkat dalam bahasa Indonesia.",
+		Prompt:     "Apa itu kopi susu gula aren? Jawab satu kalimat.",
+		SchemaName: "cs_answer",
 		JSONSchema: schema,
 	})
 	if err != nil {
@@ -50,4 +53,3 @@ func main() {
 	}
 	fmt.Printf("answer: %s\nanswered: %v\n", res.Answer, res.Answered)
 }
-
