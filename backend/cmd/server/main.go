@@ -58,6 +58,7 @@ func main() {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
 	mux.HandleFunc("POST /chat", chatHandler(svc))
+	mux.Handle("GET /", http.FileServer(http.Dir("web"))) // widget.js & demo.html
 
 	port := os.Getenv("PORT")
 	if port == "" {

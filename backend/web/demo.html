@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kedai Kopi Senja</title>
+  <style>
+    body { margin: 0; font-family: Georgia, serif; background: #f3ece4; color: #3b2a1e; }
+    header { padding: 48px 24px; text-align: center; background: #3b2a1e; color: #f3ece4; }
+    main { max-width: 640px; margin: 32px auto; padding: 0 24px; line-height: 1.6; }
+    /* CSS "nakal" website klien: widget di Shadow DOM tidak boleh ikut berubah */
+    button { background: red !important; font-size: 30px !important; }
+    p { color: green; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kedai Kopi Senja</h1>
+    <p>Kopi susu gula aren favorit Jakarta Selatan</p>
+  </header>
+  <main>
+    <p>Halaman ini adalah website demo. Klik tombol chat di pojok kanan bawah, lalu tanyakan jam buka, harga menu, atau cara pesan.</p>
+    <button>Tombol milik website (sengaja dibuat merah)</button>
+  </main>
+
+  <!-- Satu baris ini saja yang perlu dipasang pemilik website -->
+  <script src="/widget.js" data-site-key="demo-kopi" data-title="Kedai Kopi Senja"></script>
+</body>
+</html>
