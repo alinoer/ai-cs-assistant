@@ -12,4 +12,4 @@ Jl. Melati No. 12, Jakarta Selatan. Tersedia parkir motor, parkir mobil terbatas
 - Croissant Butter: Rp25.000
 
 ## Pemesanan
-Pesan antar bisa lewat GoFood dan GrabFood. Untuk pesanan di atas 20 cup, hubungi WhatsApp 0812-0000-0000 minimal H-1.
+Pesan antar bisa lewat aplikasi Gojek (GoFood) dan aplikasi Grab (GrabFood). Untuk pesanan di atas 20 cup, hubungi WhatsApp 0812-0000-0000 minimal H-1.
