@@ -1,6 +1,6 @@
 # Go
-backend/ai-cs-assistant-backend
-backend/bin/
+ai-cs-assistant-backend
+bin/
 *.exe
 
 # Env
