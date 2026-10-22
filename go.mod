@@ -1,6 +1,6 @@
 module github.com/alinoer/ai-cs-assistant-backend
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/jackc/pgx/v5 v5.11.0
@@ -15,4 +15,5 @@ require (
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
+	golang.org/x/time v0.16.0 // indirect
 )

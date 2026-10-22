@@ -16,6 +16,8 @@ import (
 	"github.com/alinoer/ai-cs-assistant-backend/internal/db"
 	"github.com/alinoer/ai-cs-assistant-backend/internal/llm"
 	"github.com/alinoer/ai-cs-assistant-backend/internal/rag"
+	"github.com/alinoer/ai-cs-assistant-backend/internal/ratelimit"
+	"golang.org/x/time/rate"
 )
 
 const maxQuestionChars = 500
@@ -57,7 +59,12 @@ func main() {
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
-	mux.HandleFunc("POST /chat", chatHandler(svc))
+	limiter := ratelimit.New(
+		rate.Every(10*time.Second), 5,          // per IP: 5 beruntun, isi ulang 1 per 10 detik
+		rate.NewLimiter(rate.Every(time.Second), 30), // global: ±1 per detik, lonjakan maks 30
+		os.Getenv("TRUST_PROXY") == "true",
+	)
+	mux.Handle("POST /chat", limiter.Middleware(chatHandler(svc)))
 	mux.Handle("GET /", http.FileServer(http.Dir("web"))) // widget.js & demo.html
 
 	port := os.Getenv("PORT")
